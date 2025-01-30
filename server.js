@@ -33,6 +33,41 @@ let items = [
       res.status(404).json({ message: "Ítem no encontrado" });
     }
   });
+
+  // Crear un nuevo ítem
+app.post("/items", (req, res) => {
+  const newItem = {
+    id: items.length + 1,
+    name: req.body.name,
+  };
+  items.push(newItem);
+  res.status(201).json(newItem);
+});
+
+// Actualizar un ítem existente
+app.put("/items/:id", (req, res) => {
+  const itemId = parseInt(req.params.id);
+  const itemIndex = items.findIndex((i) => i.id === itemId);
+  if (itemIndex !== -1) {
+    items[itemIndex].name = req.body.name;
+    res.json(items[itemIndex]);
+  } else {
+    res.status(404).json({ message: "Ítem no encontrado" });
+  }
+});
+
+// Eliminar un ítem
+app.delete("/items/:id", (req, res) => {
+  const itemId = parseInt(req.params.id);
+  const itemIndex = items.findIndex((i) => i.id === itemId);
+  if (itemIndex !== -1) {
+    const deletedItem = items.splice(itemIndex, 1);
+    res.json(deletedItem);
+  } else {
+    res.status(404).json({ message: "Ítem no encontrado" });
+  }
+});
+
   
   
   
